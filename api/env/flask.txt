@@ -1,0 +1,165 @@
+- Understand Feedhq
+-- Data Structure
+-- Feeds_category - id serial,name,slug,user_id,order,color
+-- feeds_uniquefeed - id,url,title,link,etag,modified,last_update,muted,muted_reason,hub,backoff_factor,last_loop,subscribers
+-- feeds_feed - id serial,name,utl,category_id,unread_count,favicon,img_safe
+-- feeds_entry - id serial,feed_id,title,subtitle,link,permalink,date,user_id,read,read_later_url,starred,broadcast
+-- feeds_favicon - id serial,url,favicon
+-- reader_authtoken - id serial,user_id,token,date_created
+
+-- Functions
+--- Feed Fetching (Scheduled job  etc.)
+----- feeds/management/commands folder has all the custom commands 
+--- Pubsubhub support
+---- currently disabled as per author, need to check
+--- User mgmt.
+----- user management done through django's authentication system
+
+-- To-do activity list
+--- REST API (On similar lines as newsblur)
+--- Choosing authentication method (basic, Oauth etc.)
+--- Enabling/providing pubsubhubbub support
+--- WEB UI using SPA framework utilizing REST API
+--- using honcho instead of ruby foreman 
+------------------------------------------------------
+- Rsspusher
+-- watches - url, callback, subscribed?, leatill
+-- updates - url,lastupdate
+-- feeds - feedurl, url
+-- register_pending - url 
+------------------------------------------------------
+*tech. stack - 
+Web server- nginx
+CSS Library- Responsive Bootstrap (Switch to CDN in production, local in dev.)
+JS Library- AngularJS (Switch to CDN in production, local in dev.)
+Database-mongodb
+App server-uwsgi/Flask,flask-mimereader,flask-restful,flask-seasurf,flask-testing
+Background jobs-Celery 3.0 [No need of flask extension] with mongodb (package name 'celery-with-mongodb') 
+processes manager-supervisor
+Monitoring-Sentry, Celery-flower
+* High level db structure (relational),
+Users -> Categories -> Feeds -> Feed_items
+- Users (id,name,pwd,email)
+- Categories (id,name)
+- Feeds (url(pk),favicon,img_safe)
+- Feeditems (id,feed_id,link,title,subtitle,permalink,date)
+- Userfeeds (id,user_id,feed_id,name,category_id)
+- Userfeeditems (id,feeditem_id,read,starred)
+
+* High level db structure (document),
+* http://stackoverflow.com/questions/4121666/updating-nested-arrays-in-mongodb
+- Users {
+	id : <email>,
+	name : string,
+	pwd : string,
+	categories : [],
+	subs :[
+		{
+		_id: <url>,
+		categories: [],
+		<feeditem_id>: {
+			isread : boolean,
+			isstarred : boolean,
+		  }		
+		}
+	]
+	
+- Feeds {
+	_id : <url>,
+	title: string,
+	desc: string,
+	link: string,
+	
+	items : [{
+		_id: <objectid>,
+		link: string,
+		title: string,
+		summary (content): string,
+		published_date: number,
+	}]
+}
+
+Feeds (Master copy)
+* Components
+** Reuse of feedparser.py and feedfinder.py from newsblur
+** REST API with authentication to,
+*** allow users to signup/login/logout
+*** allow to get hierarchial list (Categories and feeds) 
+*** allow to manage feeds (add, show items, mark as read/unread) for a user 
+** Process to maintain master list of feeds and feed items
+** Process to parse feeds and enroll to receive item updates via pubsubhubbub or mark them for polling
+** Celery task to periodically poll for updates for blogs which are not delivered via pubsubhub
+** Celery task to remove feeds that are no longer subscribed for by any user.
+*** Expose end point for hubs to send updates 
+* API to be exposed,
+get /login
+get /logout
+get /signup
+
+post /category
+put /category
+delete /category
+
+get /feed
+post /feed
+put /feed
+delete /feed
+
+put /feed_item/mark_read_or_unread
+put /feed_item/new_category
+** requirements.txt
+flask
+flask-pymongo (this will automatically install required dependencies, http://flask-pymongo.readthedocs.org/en/latest/)
+flask-script
+honcho (foreman port to python, wud be useful when running web and background tasks)
+flask-restful
+flask-assets (to be used for bundling assets, https://github.com/trtg/flask_assets_tutorial)
+closure
+cssmin
+** create manage.py to run app.  (use flask-script)
+	** create auth.py for simple basic authentication  (like https://github.com/rozza/flask-tumblelog/blob/master/tumblelog/auth.py)
+** create api.py and define blueprint 'api'
+*** in api.py, define end-points as listed above 
+** create __init__.py and setup app  (ref https://github.com/rozza/flask-tumblelog/blob/master/tumblelog/__init__.py)
+** create dbcon.py file and add following, (src: http://dev.pocoo.org/~mitsuhiko/FlaskPatterns_notes.pdf)
+from flask import Flask, _app_ctx_stack
+from pymongo import MongoClient
+		
+class dbcon(object):
+	def __init__(self, app):
+		self.init_app(self.app)
+	
+	def init_app(self, app):
+		app.config.setdefault('myapp_DB_uri', 'mongodb://localhost:27017/feeds_dev')
+		app.teardown_appcontext(self.teardown)
+	
+	def teardown(self, exception):
+		ctx = _app_ctx_stack.top
+		if hasattr(ctx, 'myapp_db'):	
+			ctx.mongo_db.close()
+		
+	def connect(self,app):
+		# mongodb://localhost:27017/feeds_dev
+		return MongoClient.connect(app.config["myapp_DB_uri"])
+		
+	@property
+	def connection(self):
+		ctx = _app_ctx_stack.top
+		if not hasattr(ctx, 'myapp_db'):
+			ctx.mongo_db = self.connect(ctx.app)
+		return ctx.mongo_db
+"""		
+How to use above,
+from flask import Flask
+import dbcon
+app = Flask(__name__)
+db = dbcon(app)
+@app.route('/')
+def index():
+	db.connection.execute_some_operation()
+	return '...'
+"""
+** 
+- Expose REST API using Flask & test it
+- Implement API Key based access
+- Background job to periodically update feeds

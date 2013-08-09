@@ -1,0 +1,75 @@
+<div data-ng-include data-src="'views/partials/header.html'"></div>
+<div class="row-fluid">
+	<div class="span12 pagination-centered">
+		<div data-ng-show="errors" class="alert alert-error">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<h4>Error!</h4>
+			<span data-ng-repeat="err in errors">{{err}}<br/></span>
+		</div>			
+		<div data-ng-show="successmsg" class="alert alert-success">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<h4>Success!</h4>
+			{{successmsg}}
+		</div>			
+	</div>
+</div>
+<div class="row-fluid">
+   <div class="span3">
+		<div class="btn-toolbar  pull-left" data-ng-show="factory.feedlist != null">
+			<div class="btn-group">
+				<a class="btn" data-ng-click="addcat()" href="javascript:void(0)"><i class="icon-star"></i> Add Category</a>
+				<a class="btn" data-ng-click="addfeed()" href="javascript:void(0)"><i class="icon-star"></i> Add Feed</a>
+			</div>   
+		</div>
+	</div>
+	<div class="span9">
+		<div class="btn-toolbar  pull-right" data-ng-show="factory.feed != null">
+			<div class="btn-group">
+				<a class="btn" data-ng-disabled="factory.feed.url==''"   data-ng-click="refreshfeed(factory.feed.url)" href="javascript:void(0)"><i class="icon-refresh"></i>Refresh</a>
+				<a class="btn" data-ng-disabled="factory.feed.url==''" data-ng-click="removefeed(factory.feed.url)" href="javascript:void(0)"><i class="icon-remove"></i>Unsubscribe</a>
+				<a class="btn" data-ng-disabled="factory.feed.url==''" data-ng-click="markallread(factory.feed.url)" href="javascript:void(0)"><i class="icon-remove"></i>Mark all as read</a>
+			</div>
+			<div class="btn-group" data-ng-show="factory.feed.url != ''">
+				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+				Change Category
+				<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu">
+					<li data-ng-repeat="category in factory.categories">
+						<a data-ng-click="changecategory(category)" href="javascript:void(0)">{{category}}</a>
+					</li>
+				</ul>
+			</div>					
+		</div>			
+	</div>
+</div>
+<div class="row-fluid">
+   <div class="span3">
+		<div data-ng-include data-src="'views/partials/sidebar.html'"></div>
+   </div>
+   <div class="span9">
+		<div class="feed-scrollable" data-ng-show="factory.feed != null">
+				<p><i>Feeds from {{factory.feed.title}}</i></p>
+				<div class="accordion" id="accordion1">
+					<div class="accordion-group" data-ng-repeat= "f in factory.feed.data">
+						<div class="accordion-heading" data-ng-switch="f.isread">
+							 <a data-ng-click="updateitem(f._id,true,false)" data-ng-switch-default class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse{{$index}}"><span data-ng-show="f.feed.title">{{f.isread}}[{{f.feed.title}}]&nbsp;&nbsp;&nbsp;&nbsp;</span><b>{{f.title}}</b><span class="pull-right">{{f.published}}</span></a>
+							 <a data-ng-click="updateitem(f._id,true,false)" data-ng-switch-when="true"  class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse{{$index}}"><span data-ng-show="f.feed.title">[{{f.feed.title}}]&nbsp;&nbsp;&nbsp;&nbsp;</span>{{f.title}}<span class="pull-right">{{f.published}}</span></a>
+							</a>
+						</div>
+						<div id="collapse{{$index}}" class="accordion-body collapse">
+							<div class="accordion-inner"><a target="_new" href="{{f.link}}">{{f.title}}</a><br/><div ng-bind-html-unsafe="f.summary"/></div>
+							<div> <form class="form-inline"><label class="checkbox">
+										<input type="checkbox"> Mark as Read
+									</label>
+									<label class="checkbox">
+										<input type="checkbox"> Mark as Unread
+									</label>
+									</form>
+							</div>
+						</div>
+					</div>		  
+				</div>
+			</div>
+   </div>
+</div>

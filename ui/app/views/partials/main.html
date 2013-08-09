@@ -1,0 +1,48 @@
+<div data-ng-include data-src="'views/partials/header.html'"></div>
+<div class="row-fluid">
+	<div class="span12 pagination-centered">
+		<div data-ng-show="errors" class="alert alert-error">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<h4>Error!</h4>
+			<span data-ng-repeat="err in errors">{{err}}<br/></span>
+		</div>			
+		<div data-ng-show="successmsg" class="alert alert-success">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<h4>Success!</h4>
+			{{successmsg}}
+		</div>			
+	</div>
+</div>
+<div class="row-fluid">
+   <div class="span2">
+	<div data-ng-include data-src="'views/partials/sidebar.html'"></div>
+   </div>
+   <div class="span9">
+		<div class="row-fluid" data-ng-show="factory.feed != null">
+			<div class="span12">
+				<div class="btn-toolbar  pull-right">
+					<div class="btn-group">
+						<a class="btn" href="#"><i class="icon-refresh"></i>Refresh</a>
+						<a class="btn" href="#"><i class="icon-remove"></i>Unsubscribe</a>
+						<a class="btn" href="#"><i class="icon-arrow-down"></i>Category</a>
+					</div>
+				</div>			
+			</div>
+			<div class="span12">
+				<p><i>Feeds from {{factory.feedtitle}}</i></p>
+				<div class="accordion" id="accordion1">
+					<div class="accordion-group" data-ng-repeat= "f in factory.feed">
+						<div class="accordion-heading" data-ng-switch="f.isread">
+							 <a data-ng-click="updateitem(f._id,true,false)" ng-switch-when="false" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse{{$index}}"><span data-ng-show="f.feedtitle">[{{f.feedtitle}}]&nbsp;&nbsp;&nbsp;&nbsp;</span><b>{{f.title}}</b><span class="pull-right">{{f.published_date}}</span></a>
+							 <a data-ng-click="updateitem(f._id,true,false)" ng-switch-default class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse{{$index}}"><span data-ng-show="f.feedtitle">[{{f.feedtitle}}]&nbsp;&nbsp;&nbsp;&nbsp;</span>{{f.title}}<span class="pull-right">{{f.published_date}}</span></a>
+							</a>
+						</div>
+						<div id="collapse{{$index}}" class="accordion-body collapse">
+							<div class="accordion-inner"><a target="_new" href="{{f.link}}">{{f.title}}</a><br/>{{f.summary}}</div>
+						</div>
+					</div>		  
+				</div>
+			</div>
+		</div>
+   </div>
+</div>

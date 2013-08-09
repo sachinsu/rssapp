@@ -1,0 +1,3 @@
+#HTTP_PROXY="http://www-proxy.jp.oracle.com:80"
+DATABASE_URI="mongodb://localhost:27017/?safe=true"
+DBNAME="feedtest"

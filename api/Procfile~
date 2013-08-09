@@ -1,0 +1,4 @@
+web: sh -c ' cd ../rssui/ && grunt server'
+rest: python rssapp.py
+scheduler: python scheduleit.py
+archiver: python archiver.py

@@ -1,0 +1,11 @@
+<div class="well sidebar-nav" data-ng-show="factory.feedlist != null" data-ng-controller="SideBarCtrl">
+		<ul class="nav nav-list">
+			  <li class="nav-header"><a href="#" data-ng-click="getfeeds('','All feeds')">All</a></li>
+			  <li class="nav-header" data-ng-repeat="feed in factory.feedlist"><a href="javascript:void(0)" data-toggle="collapse" data-target="#{{feed.category}}"><i class="icon-folder-close"></i>{{feed.category}}</a>
+				  <ul id="{{feed.category}}" class="nav nav-list collapse in">
+						<li data-ng-repeat="itm in feed.items" data-ng-class="{true:'active',false:'normal'}[itm.link==factory.feed.url]"><a data-ng-show="itm.unreadcount <= 0" href="#" data-ng-click="getfeeds(itm.link,itm.title,feed.category)">{{itm.title}}</a>
+						<a data-ng-show="itm.unreadcount > 0" href="javascript:void(0)" data-ng-click="getfeeds(itm.link,itm.title,feed.category)"><b>{{itm.title}}&nbsp;({{itm.unreadcount}})</b></a>	</li>
+					</ul>
+			  </li>
+			</ul>
+</div><!--/.well -->
