@@ -1,6 +1,4 @@
-/* Will be compiled down to a single stylesheet with your sass files 
-url: http://stackoverflow.com/questions/15666834/how-to-create-a-gmail-like-layout-with-twitter-bootstrap
-*/
+/* Will be compiled down to a single stylesheet with your sass files */
 body {
 padding-top: 60px;
 padding-bottom: 40px;

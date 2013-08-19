@@ -1,5 +1,5 @@
 <div data-ng-include data-src="'views/partials/header.html'"></div>
-<div class="row">
+<div class="row-fluid">
    <div class="span3">
 		<div class="btn-toolbar  pull-left" data-ng-show="factory.feedlist != null">
 			<div class="btn-group">
