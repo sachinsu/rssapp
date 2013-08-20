@@ -1,13 +1,14 @@
-/* Will be compiled down to a single stylesheet with your sass files 
-url: http://stackoverflow.com/questions/15666834/how-to-create-a-gmail-like-layout-with-twitter-bootstrap
+/* Will be compiled down to a single stylesheet with your sass files
+Bootstrap Fixed layout ref:http://stackoverflow.com/questions/15666834/how-to-create-a-gmail-like-layout-with-twitter-bootstrap
 */
 body {
 padding-top: 60px;
-padding-bottom: 40px;
+padding-bottom: 0px;
 }
 .sidebar-nav {
 padding: 9px 0;
 }
+
   
 @media (max-width: 980px) {
 /* Enable use of floated navbar text */
@@ -26,7 +27,7 @@ html, body {
     height: 100%;
 }
 
- .column:before, .column:after {
+.column:before, .column:after {
     content: "";
     display: table;
 }
@@ -45,7 +46,7 @@ html, body {
     left: 0;
     position: absolute;
     right: 0;
-    top: 105px;
+    top: 45px;
 }
 
 .span9.full {

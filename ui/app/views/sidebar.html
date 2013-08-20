@@ -1,0 +1,17 @@
+<div class="row-fluid" data-ng-show="factory.feedlist != null" data-ng-controller="SideBarCtrl">
+  <div class="span11  pagination-centered">
+	<a class="btn btn-mini" data-ng-click="addcat()" href="javascript:void(0)"><i class="icon-star"></i> Add Category</a>
+	<a class="btn btn-mini" data-ng-click="addfeed()" href="javascript:void(0)"><i class="icon-star"></i> Add Feed</a>	
+  </div>
+  <div class="span11">
+	<div class="well sidebar-nav">
+			<ul class="nav nav-list">
+				  <li class="nav-header"><a href="#" data-ng-click="getfeeds('','All feeds')">All</a></li>
+				  <li class="nav-header" data-ng-repeat="feed in factory.feedlist">{{feed.category}}
+						<ul data-ng-repeat="itm in feed.items"><li><a data-ng-show="itm.unreadcount == 0" href="#" data-ng-click="getfeeds(itm.link,itm.title,feed.category)">{{itm.title}}</a>
+						<a data-ng-show="itm.unreadcount > 0" href="#" data-ng-click="getfeeds(itm.link,itm.title,feed.category)"><b>{{itm.title}}&nbsp;({{itm.unreadcount}})</b></a>	</li></ul>
+				  </li>
+				</ul>
+	</div><!--/.well -->
+  </div>
+</div>

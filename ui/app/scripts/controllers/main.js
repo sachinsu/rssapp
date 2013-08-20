@@ -22,6 +22,79 @@ angular.module('projectApp')
 		$scope.successmsg = args;
 	});
 
+	$scope.updateitem = function(id,isread,isstarred){
+		console.log("inside updateitem" + isread);
+		var f = _.first(rssfactory.feed.data,function(item){
+			return item._id==id;
+		});
+		
+		if (f && (f.isread != isread || f.isstarred != isstarred)){
+			rssfactory.updateitem(id,isread,isstarred,function(result){
+				f.isread = isread;
+				f.isstarred = isstarred;
+			},function(d,s,h,c){
+				$scope.$emit('onerror',d);
+			});
+		}
+	};
+	
+  })
+  .controller('LoginCtrl', function($scope,rssfactory,$dialog){ 
+		$scope.factory = rssfactory;
+		
+		$scope.user = {emailid:"",pwd:"",name:""};
+		
+		$scope.login = function(emailid,name,pwd) { 
+			 // console.log("in login method");
+			 // console.log(emailid);
+			rssfactory.register(emailid,name,pwd,function(result){
+				// console.log("login success->")
+				// console.log(result);
+				rssfactory.emailid=emailid;
+				rssfactory.pwd=pwd;	
+				rssfactory.feedlist = result.feedlist
+				rssfactory.categories = result.categories
+				// $scope.$emit('onsuccess','Logged in...');
+			},function(d,s,h,c){
+				// error occured
+				console.log("in error handler" + d);
+				$scope.$emit('onerror',["Login/registration failed "]);
+			});			
+		};
+		
+		$scope.logout = function(){
+			rssfactory.logout();
+		};
+
+		$scope.opts = {
+			backdrop: true,
+			keyboard: true,
+			backdropClick: true
+		  };
+			//resolve: {rssfactory: function(){ return angular.copy(rssfactory); }} 					
+		$scope.addcat= function(){
+			$scope.opts.templateUrl=  'views/partials/category.html';
+			$scope.opts.controller= 'AddCatCtrl';
+			 var d = $dialog.dialog($scope.opts);
+			 d.open().then(function(result){
+				if(result)
+				{
+				//todo: update feedtree
+				}
+			});			
+		};
+
+		$scope.addfeed= function(){
+			$scope.opts.templateUrl='views/partials/addfeed.html';
+			$scope.opts.controller='AddFeedCtrl';
+			 var d = $dialog.dialog($scope.opts);
+			 d.open().then(function(result){
+				if(result)
+				{
+				//todo: update feedtree
+				}
+			});			
+		};
 	$scope.refreshfeed = function(feedurl) { 
 		 // console.log("in refreshfeed method" + feedurl);
 		// console.log(emailid);
@@ -92,81 +165,6 @@ angular.module('projectApp')
 		});		
 	};
 	
-	$scope.updateitem = function(id,isread,isstarred){
-		console.log("inside updateitem" + isread);
-		var f = _.first(rssfactory.feed.data,function(item){
-			return item._id==id;
-		});
-		
-		if (f && (f.isread != isread || f.isstarred != isstarred)){
-			rssfactory.updateitem(id,isread,isstarred,function(result){
-				f.isread = isread;
-				f.isstarred = isstarred;
-			},function(d,s,h,c){
-				$scope.$emit('onerror',d);
-			});
-		}
-	};
-	
-	
-
-		$scope.opts = {
-			backdrop: true,
-			keyboard: true,
-			backdropClick: true
-		  };
-			//resolve: {rssfactory: function(){ return angular.copy(rssfactory); }} 					
-		$scope.addcat= function(){
-			$scope.opts.templateUrl=  'views/partials/category.html';
-			$scope.opts.controller= 'AddCatCtrl';
-			 var d = $dialog.dialog($scope.opts);
-			 d.open().then(function(result){
-				if(result)
-				{
-				//todo: update feedtree
-				}
-			});			
-		};
-
-		$scope.addfeed= function(){
-			$scope.opts.templateUrl='views/partials/addfeed.html';
-			$scope.opts.controller='AddFeedCtrl';
-			 var d = $dialog.dialog($scope.opts);
-			 d.open().then(function(result){
-				if(result)
-				{
-				//todo: update feedtree
-				}
-			});			
-		};
-	
-  })
-  .controller('LoginCtrl', function($scope,rssfactory){ 
-		$scope.factory = rssfactory;
-		
-		$scope.user = {emailid:"",pwd:"",name:""};
-		
-		$scope.login = function(emailid,name,pwd) { 
-			 // console.log("in login method");
-			 // console.log(emailid);
-			rssfactory.register(emailid,name,pwd,function(result){
-				// console.log("login success->")
-				// console.log(result);
-				rssfactory.emailid=emailid;
-				rssfactory.pwd=pwd;	
-				rssfactory.feedlist = result.feedlist
-				rssfactory.categories = result.categories
-				// $scope.$emit('onsuccess','Logged in...');
-			},function(d,s,h,c){
-				// error occured
-				console.log("in error handler" + d);
-				$scope.$emit('onerror',["Login/registration failed "]);
-			});			
-		};
-		
-		$scope.logout = function(){
-			rssfactory.logout();
-		};
 		
   })
   .controller('AddCatCtrl',function($scope,dialog,rssfactory){
