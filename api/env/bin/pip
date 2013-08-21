@@ -1,4 +1,4 @@
-#!/home/ubuntu/projects/ghrssapp/api/env/bin/python
+#!/home/ubuntu/projects/app/api/env/bin/python
 # EASY-INSTALL-ENTRY-SCRIPT: 'pip==1.1','console_scripts','pip'
 __requires__ = 'pip==1.1'
 import sys

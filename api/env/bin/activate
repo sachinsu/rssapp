@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelavent variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/ubuntu/projects/ghrssapp/api/env"
+VIRTUAL_ENV="/home/ubuntu/projects/app/api/env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

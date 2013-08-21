@@ -1,4 +1,4 @@
-#!/home/ubuntu/projects/ghrssapp/api/env/bin/python
+#!/home/ubuntu/projects/app/api/env/bin/python
 # EASY-INSTALL-ENTRY-SCRIPT: 'distribute==0.6.24','console_scripts','easy_install'
 __requires__ = 'distribute==0.6.24'
 import sys

@@ -1,4 +1,4 @@
-#!/home/ubuntu/projects/ghrssapp/api/env/bin/python
+#!/home/ubuntu/projects/app/api/env/bin/python
 # EASY-INSTALL-ENTRY-SCRIPT: 'celery==3.0.19','console_scripts','celerybeat'
 __requires__ = 'celery==3.0.19'
 import sys
