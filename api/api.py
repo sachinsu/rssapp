@@ -410,19 +410,19 @@ class User(object):
 			if feeds is not None:
 				for sub in feeds['subs']:
 					if sub != {}:		
-						print "**** --" + sub.get('_id','notfound') + "-- ****"
-						treeobj = {'link':sub['_id'],'unreadcount': sub['unreadcount'],'category':sub['category']}
-						# get feeditems and title from feed collection
-						masteritems = []
-						masterfeed = db.feeds.find({'_id':sub['_id']},{'title':1,'items._id':1,'_id':0})
-						for r in masterfeed:
-							treeobj['title'] = r['title']
-							for mid in r['items']:
-								masteritems.append(mid['_id'])
-								
-						treeobj['unreadcount'] = treeobj['unreadcount'] + len(set(masteritems) - set(sub['items']))
-						# get array feed items from master
-						feedtree.append(treeobj)
+						if sub.get('_id','notfound') != 'notfound':
+							treeobj = {'link':sub['_id'],'unreadcount': sub['unreadcount'],'category':sub['category']}
+							# get feeditems and title from feed collection
+							masteritems = []
+							masterfeed = db.feeds.find({'_id':sub['_id']},{'title':1,'items._id':1,'_id':0})
+							for r in masterfeed:
+								treeobj['title'] = r['title']
+								for mid in r['items']:
+									masteritems.append(mid['_id'])
+									
+							treeobj['unreadcount'] = treeobj['unreadcount'] + len(set(masteritems) - set(sub['items']))
+							# get array feed items from master
+							feedtree.append(treeobj)
 					
 				#src: http://wiki.python.org/moin/SortingListsOfDictionaries
 				# sort by category
@@ -638,9 +638,11 @@ class Feed(object):
 								archivelist.append({'feedurl':feedurl,'itemid':post['_id']})
 								
 				for post in archivelist:
-					ret = db.users.update({'subs._id':post['feedurl'],('subs.items.%s.isread' % post['itemid']):True},{'pull':{('subs.items.%s' % post['itemid']):''}})
+					print "now updating " + post["feedurl"]
+					ret = db.users.update({'subs._id':post['feedurl'],('subs.items.%s.isread' % post['itemid']):True},{'$pull':{('subs.items.%s' % post['itemid']):''}})
 					retval,err = Helper.checkValid(ret)
-
+					print "after updating " + post["feedurl"]
+					
 					if not retval:
 						res.adderror(err)
 					else:

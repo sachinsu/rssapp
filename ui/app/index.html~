@@ -11,32 +11,17 @@
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css styles/main.css -->
-    <link rel="stylesheet" href="styles/bootstrap.css">
-    <link rel="stylesheet" href="styles/main.css">
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <!--[if IE 7]>
+	  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome-ie7.min.css">
+    <![endif]-->	
+    <link rel="stylesheet" href="styles/main.css>
+       
+    <!-- link rel="stylesheet" href="styles/bootstrap.css"-->
+    <!-- link rel="stylesheet" href="styles/main.css"-->
     <!-- endbuild -->
    <style type="text/css">
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-      .sidebar-nav {
-        padding: 9px 0;
-      }
-	  
-	  .feed-scrollable { 
-		overflow-y: scroll;
-		margin: 5px;
-		height: 80%;
-	  }
-
-      @media (max-width: 980px) {
-        /* Enable use of floated navbar text */
-        .navbar-text.pull-right {
-          float: none;
-          padding-left: 5px;
-          padding-right: 5px;
-        }
-      }
     </style>
 
   </head>
@@ -53,7 +38,7 @@
     <div class="container-fluid" ng-view></div>
     <script src="components/angular/angular.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-    <script src="components/bootstrap/js/bootstrap.js"></script>	
+    <script src="components/bootstrap/docs/assets/js/bootstrap.min.js"></script>	
     <script src="components/lodash/dist/lodash.min.js"></script>	
     <script src="components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>		
     <!-- build:js scripts/scripts.js -->

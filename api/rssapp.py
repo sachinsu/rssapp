@@ -144,7 +144,7 @@ def buildresponse(notobj,opts):
 	return response
 
 app = make_rest_app(__name__)
-defpath = ''
+defpath = '/api'
 app.secret_key = "sfdusyfsyf37487347hijehfjshfksf983843"
 db = conn.dbcon(app) 
 	
@@ -255,7 +255,7 @@ def addfeed(**kwargs):
 	# app.logger.info(app.config['HTTP_PROXY'])
 	user = User()
 	nobj = user.addfeed(db.connection,kwargs['email'],request.json['feedurl'],request.json['category'],
-	{'http_proxy':app.config.get('HTTP_PROXY',None)})
+	{'http_proxy':app.config['HTTP_PROXY']})
 	if not nobj.haserrors and nobj.result is not None:
 		nobj.result={}
 		resobj = user.getfeedtree(db.connection,kwargs['email'])
@@ -335,7 +335,7 @@ def refreshfeed(**kwargs):
 	# app.logger.info(kwargs['email'])
 	feed = Feed()
 	nobj = feed.updatefeed(db.connection,request.args.get('feedurl'),
-	{'http_proxy':app.config.get('HTTP_PROXY',None)})
+	{'http_proxy':app.config['HTTP_PROXY']})
 	
 	if not nobj.haserrors:
 		user = User()

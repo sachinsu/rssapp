@@ -514,8 +514,7 @@ app.config(['$httpProvider', function($httpProvider) {
   
 /* Todo,
  - error display section, visibility:hidden check instead of display none.
+ - Mark all as Read & Mark as unread
  - refresh button on sidebar and/or auto refresh mechanism
  - Provision for Scroll bar 
- - Pagination support
- - keyboard navigation
- */
+*/
