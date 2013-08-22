@@ -36,21 +36,17 @@ Change Category
 </div>
 <div class="column span9">
 <div class="feed-scrollable" data-ng-show="factory.feed != null">
-<p><i>Feeds from {{factory.feed.title}}</i></p>
+<p><i>{{factory.feed.title}}</i></p>
 <div class="accordion" id="accordion1">
 <div class="accordion-group" data-ng-repeat= "f in factory.feed.data">
-<div class="accordion-heading" data-ng-switch="f.isread">
-<a data-ng-click="updateitem(f._id,true,false)" data-ng-switch-default class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse{{$index}}"><span data-ng-show="f.feed.title">{{f.isread}}[{{f.feed.title}}]&nbsp;&nbsp;&nbsp;&nbsp;</span><b>{{f.title}}</b><span class="pull-right">{{f.published}}</span></a>
-<a data-ng-click="updateitem(f._id,true,false)" data-ng-switch-when="true" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse{{$index}}"><span data-ng-show="f.feed.title">[{{f.feed.title}}]&nbsp;&nbsp;&nbsp;&nbsp;</span>{{f.title}}<span class="pull-right">{{f.published}}</span></a>
-</a>
+<div class="accordion-heading">
+<a data-ng-click="updateitem(f._id,true,false)" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse{{$index}}"><span data-ng-show="f.feed.title">{{f.isread}}[{{f.feed.title}}]&nbsp;&nbsp;&nbsp;&nbsp;</span><b data-ng-show="!f.isread">{{f.title}}</b><span data-ng-show="f.isread">{{f.title}}</span><span class="pull-right">{{f.published}}</span></a>
 </div>
 <div id="collapse{{$index}}" class="accordion-body collapse">
 <div class="accordion-inner"><a target="_new" href="{{f.link}}">{{f.title}}</a><br/><div ng-bind-html-unsafe="f.summary"/></div>
-<div> <form class="form-inline">
-<label class="checkbox">
-<input type="checkbox"> Keep Unread
+<div class="storyoptdivider"> <label class="checkbox">
+<input data-ng-click="keepunread(f._id,$event)" type="checkbox"> Keep Unread
 </label>
-</form>
 </div>
 </div>
 </div>	

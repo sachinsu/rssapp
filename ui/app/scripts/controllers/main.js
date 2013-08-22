@@ -23,7 +23,7 @@ angular.module('projectApp')
 	});
 
 	$scope.updateitem = function(id,isread,isstarred){
-		console.log("inside updateitem" + isread);
+		// console.log("inside updateitem" + isread);
 		var f = _.first(rssfactory.feed.data,function(item){
 			return item._id==id;
 		});
@@ -38,6 +38,12 @@ angular.module('projectApp')
 		}
 	};
 	
+	$scope.keepunread = function(id,$event){
+			// console.log("in keepunread");
+			var chkbox = $event.target;
+			$scope.updateitem(id,!chkbox.checked,false);
+	};
+
   })
   .controller('LoginCtrl', function($scope,rssfactory,$dialog){ 
 		$scope.factory = rssfactory;
