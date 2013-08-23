@@ -40,7 +40,7 @@ Change Category
 <div class="accordion" id="accordion1">
 <div class="accordion-group" data-ng-repeat= "f in factory.feed.data">
 <div class="accordion-heading">
-<a data-ng-click="updateitem(f._id,true,false)" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse{{$index}}"><span data-ng-show="f.feed.title">{{f.isread}}[{{f.feed.title}}]&nbsp;&nbsp;&nbsp;&nbsp;</span><b data-ng-show="!f.isread">{{f.title}}</b><span data-ng-show="f.isread">{{f.title}}</span><span class="pull-right">{{f.published}}</span></a>
+<a data-ng-click="updateitem(f._id,true,false)" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse{{$index}}"><span data-ng-show="factory.feed.url == ''">[{{f.feedtitle}}]&nbsp;&nbsp;&nbsp;&nbsp;</span><b data-ng-show="!f.isread">{{f.title}}</b><span data-ng-show="f.isread">{{f.title}}</span><span class="pull-right">{{f.published}}</span></a>
 </div>
 <div id="collapse{{$index}}" class="accordion-body collapse">
 <div class="accordion-inner"><a target="_new" href="{{f.link}}">{{f.title}}</a><br/><div ng-bind-html-unsafe="f.summary"/></div>

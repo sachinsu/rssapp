@@ -90,7 +90,7 @@ angular.module('projectApp')
 			});			
 		};
 
-		$scope.addfeed= function(){
+	$scope.addfeed= function(){
 			$scope.opts.templateUrl='views/partials/addfeed.html';
 			$scope.opts.controller='AddFeedCtrl';
 			 var d = $dialog.dialog($scope.opts);
@@ -101,6 +101,7 @@ angular.module('projectApp')
 				}
 			});			
 		};
+
 	$scope.refreshfeed = function(feedurl) { 
 		 // console.log("in refreshfeed method" + feedurl);
 		// console.log(emailid);
@@ -206,14 +207,29 @@ angular.module('projectApp')
 		$scope.factory = rssfactory;
 
 		$scope.getfeeds = function(furl,title,caty){
+			if (furl=="")
+			{
+				// console.log('url ' + url);
+				rssfactory.getallfeeds(function(result){
+						rssfactory.feed = {url: furl, category: caty, title:title,data: result};
+						// console.log("printing result from factory");
+						// console.log(rssfactory.feed);
+						// $scope.$emit('onsuccess','Feed data fetched');
+					},function(d,s,h,c){
+						$scope.$emit('onerror',d);
+					});
+			}
+			else 
+			{
 			// console.log('url ' + url);
 			rssfactory.getfeeds(furl,function(result){
 					rssfactory.feed = {url: furl, category: caty, title:title,data: result};
 					// console.log("printing result from factory");
 					// console.log(rssfactory.feed);
-					$scope.$emit('onsuccess','Feed data fetched');
+					// $scope.$emit('onsuccess','Feed data fetched');
 				},function(d,s,h,c){
 					$scope.$emit('onerror',d);
 				});
+			}
 		};
   });

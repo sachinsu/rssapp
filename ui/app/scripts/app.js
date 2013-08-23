@@ -198,16 +198,16 @@ var rssfactory = function($rootScope,$http,base64){
 						factory.safeApply($rootScope,function(){ errcallback(d.errors,null,null,null); });	
 			}).error(function(d,s,h,c){
 					//todo: show error 
-					console.log("in error");
-					 console.log(d);
-					 console.log(s);
-					 console.log(h);
-					 console.log(c);
+					// console.log("in error");
+					 // console.log(d);
+					 // console.log(s);
+					 // console.log(h);
+					 // console.log(c);
 					factory.safeApply($rootScope,function(){ errcallback(d,s,h,c); });
 			});
 			};			
 
-	factory.getallfeeds = function(url,callback,errcallback){
+	factory.getallfeeds = function(callback,errcallback){
 
 			$http({method:'GET',
 					url: baseurl + 'feeds'
@@ -215,6 +215,7 @@ var rssfactory = function($rootScope,$http,base64){
 					,withCredentials: true
 			}).success(function(d,s,h,c){
 					//sample: ({errors:[], result:null, success:true})			
+					console.log("in success");					
 					if (d.success)
 						factory.safeApply($rootScope,function() { callback(d.result);});
 					else
@@ -303,7 +304,6 @@ var rssfactory = function($rootScope,$http,base64){
 			};			
 
 	factory.addfeed = function(furl,category,callback,errcallback){
-
 			$http({method:'POST',
 					url: baseurl + 'feed'
 					,data: {'feedurl': furl,'category':category}
@@ -322,7 +322,6 @@ var rssfactory = function($rootScope,$http,base64){
 			};						
 			
 	factory.removefeed = function(furl,callback,errcallback){
-
 			$http({method:'DELETE',
 					url: baseurl + 'feed'
 					,params: {feedurl: furl}
@@ -513,8 +512,5 @@ app.config(['$httpProvider', function($httpProvider) {
   }]);
   
 /* Todo,
- - error display section, visibility:hidden check instead of display none.
- - Mark all as Read & Mark as unread
- - refresh button on sidebar and/or auto refresh mechanism
- - Provision for Scroll bar 
+	- refresh button on sidebar and/or auto refresh mechanism
 */

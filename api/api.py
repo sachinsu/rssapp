@@ -451,7 +451,8 @@ class User(object):
 				urllist = []
 				for u in useritems:
 					for feed in u['subs']:
-						urllist.append(feed['_id'])
+						if feed.get('_id',0) != 0:
+							urllist.append(feed['_id'])
 				# get feeds for user's subscriptions
 				feeditems = db.feeds.find(spec={'_id':{'$in': urllist}},fields={'_id':0,'title':1,'items':1},sort=[('published_date',2),('title',1)])
 				# get 
