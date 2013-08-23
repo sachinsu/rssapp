@@ -303,7 +303,17 @@ class User(object):
 			
 			retval,err = Helper.checkValid(ret)
 
-			res.setdata(not retval,err,None)
+			unreadcount=0
+
+			if retval:
+				# get unreadcount and send it back
+				list = db.users.find_one({'_id':email,'subs._id':feedurl},{'subs._id':1,'subs.unreadcount':1})
+				for sub in list['subs']:
+					if sub.get('_id','') == feedurl:
+						unreadcount = sub['unreadcount']
+				
+			
+			res.setdata(not retval,err,unreadcount)
 			return res
 
 		except Exception,err:
@@ -724,7 +734,8 @@ class Helper(object):
 	@classmethod
 	def checkValid(cls,ret):
 		if ret:
-			if ret['ok'] and ret['ok']== 1:
+#			if ret.get(['ok'] and ret['ok']== 1:
+			if ret.get('ok',0) == 1:
 				return True,""
 			elif ret['err']:
 				return False,ret['err']
