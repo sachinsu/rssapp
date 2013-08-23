@@ -23,7 +23,7 @@ class Scheduleit():
 	
 	def schedule(self):
 		while True:
-			self.log.info("Excuting updateall at %s" % (datetime.now()))
+			self.log.info("Executing updateall at %s" % (datetime.now()))
 			notobj = self.feed.updateall(self.db,self.prxydict)
 			time.sleep(10*60)
 

@@ -1,4 +1,4 @@
-#from flask import Flask
+#from flask import Flas
 #from flask.ext.restful import reqparse, abort, Api, Resource
 import json, logging
 import feedparser, urllib2
@@ -531,9 +531,9 @@ class Feed(object):
 				for future in futures.as_completed(future_to_url):
 					feed = future_to_url[future]
 					if future.exception() is not None:
-						err = '%r generated an exception: %s' % (feed,future.exception())
-						nobj.adderror(err)
-						print(err)
+						msg = '%r generated an exception: %s' % (feed,future.exception())
+						nobj.adderror(msg)
+						print(msg)
 					else:
 						print('%r page is done' % (feed))
 		except Exception,err:
@@ -566,10 +566,20 @@ class Feed(object):
 
 				if 'items' not in feedindb:
 					feedindb["items"] = []
-
+					
 				for fitem in feed_data["entries"]:
 					fitemdb=None
 					# search if item is already available in DB
+					if fitem.has_key('published_parsed'):
+						pdate = mktime(fitem['published_parsed'])
+					else:
+						if fitem.has_key('published'):
+							#http://stackoverflow.com/questions/9516025/parsing-datetime-in-python
+							pdate = mktime(parse(fitem['published']))
+						else:
+							pdate = Helper.datetotimestamp(datetime.today())
+							
+					self.log.info("processing feed (%s) published at (%s)", fitem['title'],datetime.fromtimestamp(pdate).isoformat())
 					for fi in feedindb["items"]:	
 						if fi is not None and fi["link"] == fitem["link"]:
 							fitemdb = fi
@@ -578,15 +588,8 @@ class Feed(object):
 					src:-> http://www.seehuhn.de/pages/pdate#struct							
 					"""
 					# if not found then add it else do nothing
+					self.log.info("%s found in db" , "Not" if fitemdb is None else "")					
 					if fitemdb is None:			
-						if fitem.has_key('published_parsed'):
-							pdate = mktime(fitem['published_parsed'])
-						else:
-							if fitem.has_key('published'):
-								#http://stackoverflow.com/questions/9516025/parsing-datetime-in-python							
-								pdate = mktime(parse(fitem['published']))
-							else:
-								pdate = Helper.datetotimestamp(datetime.today())
 
 						feedindb["items"].append({
 							'_id': str(ObjectId()),	
@@ -661,45 +664,36 @@ class Feed(object):
 class FeedGateway(object):
         @classmethod
         def getfeed(cls,feedurl,settings):
-                feeddata = None
-                retval = Notification()
-                log = logging.getLogger('FeedGateway')
-                log.info("Getting feed for %s", feedurl)
-                try:
-			if settings and settings["http_proxy"] and settings["http_proxy"]<>"":
-				prxy = urllib2.ProxyHandler({"http": settings["http_proxy"],
-						"https": settings["http_proxy"]
-				})
-                                log.debug("Proxy being used is : %s",prxy)
+			feeddata = None
+			retval = Notification()
+			log = logging.getLogger('FeedGateway')
+			log.info("Getting feed for %s", feedurl)
+			try:
+				if settings and settings["http_proxy"] and settings["http_proxy"]<>"":
+					prxy = urllib2.ProxyHandler({"http": settings["http_proxy"],
+							"https": settings["http_proxy"]
+					})
+					log.debug("Proxy being used is : %s",prxy)
+				else:
+					log.debug("No Proxy in use")
+					prxy = None
+					#print "before calling parse"
+				if prxy:			
+					feeddata = feedparser.parse(feedurl, handlers = [prxy])	
+				else:
+					feeddata = feedparser.parse(feedurl)
+			except Exception,err:
+				log.error("Getfeed failed for %s with error: %s",feedurl,str(err))
+				raise
+
+			if feeddata.has_key('bozo_exception'):
+				err = str(feeddata['bozo_exception'])
+				retval.setdata(True,err,None)
 			else:
-                                log.debug("No Proxy in use")
-	                        prxy = None
-			
+				retval.setdata(False,None,feeddata)
 
-                        #print "before calling parse"
-			if prxy:			
-	                        feeddata = feedparser.parse(feedurl, handlers = [prxy])	
-			else:
-				feeddata = feedparser.parse(feedurl)
-
-			#log.debug(feeddata)
-                        #print "after calling parse"
-                except Exception,err:
-                        log.error("Getfeed failed for %s with error: %s",feedurl,str(err))
-                        raise
-
-                #print "feeddata"
-                #print feeddata
-		if feeddata.has_key('bozo_exception'):
-			err = str(feeddata['bozo_exception'])
-		else:
-			err = ""
-
-                retval.setdata(
-                        not (feeddata and feeddata['bozo'] == 0),
-                        err,feeddata)
-                #print retval
-                return retval
+			#print retval
+			return retval
 	
 #http://martinfowler.com/eaaDev/Notification.html
 class Notification(object):
