@@ -324,7 +324,7 @@ class User(object):
 				for oid in frec['items']:
 					# todo : check if id exists in user record else add it 
 					for sub in rec['subs']:
-						if sub['_id'] == feedurl:
+						if sub.get('_id',0) != 0 and sub['_id'] == feedurl:
 							userentry = None
 							for item in sub['items']:
 								if item == oid['_id']:
@@ -342,7 +342,7 @@ class User(object):
 								sub['items'].update({oid['_id']:{'isread':True,'isstarred': False}})
 				
 				for sub in rec['subs']:
-					if sub['_id'] == feedurl:
+					if sub.get('_id',0) != 0 and sub['_id'] == feedurl:
 						for item in sub['items']:
 							# print "***"
 							# print item
