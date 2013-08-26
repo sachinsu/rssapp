@@ -293,7 +293,6 @@ class User(object):
 					ret = db.users.update({'_id':email,'subs._id':feedurl},{'$inc':{'subs.$.unreadcount': (1,-1)[isread]}})
 					if not retval:
 						res.adderror(err)
-				
 			else:
 				ret = db.users.update({'_id':email,('subs.items.%s' % feeditemid):{'$exists':True}},{'$inc':{'subs.$.unreadcount': (1,-1)[isread]},'$set':{('subs.$.items.%s.isread' % feeditemid):isread, ('subs.$.items.%s.isstarred' % feeditemid):isstarred}})
 				
@@ -529,7 +528,7 @@ class Feed(object):
 		# loop through feeds that are not updated in last 30 mins
 		#http://stackoverflow.com/questions/4541629/how-to-create-a-datetime-equal-to-15-minutes-ago
 		try:
-			tilltime = Helper.datetotimestamp(datetime.now()-timedelta(minutes=15))
+			tilltime = Helper.datetotimestamp(datetime.now()-timedelta(days=15))
 			feedlist = []
 			for feed in db.feeds.find({'lastupdated':{'$lt':tilltime}},{'items':0}):
 				# and call updatefeed for each feedurl
@@ -556,7 +555,7 @@ class Feed(object):
 	def updatefeed(self,db,feedurl,settings):
 		from bson.objectid import ObjectId
 		from time import mktime
-		from datetime import datetime
+		from datetime import datetime,timedelta
 		from dateutil.parser import parse
 
 		self.log.info("Updating feed for %s" , feedurl)
@@ -571,12 +570,14 @@ class Feed(object):
 				feed_data = feedObj.result
 				feedindb = db.feeds.find_one({'_id':feedurl})
 				if feedindb is None:
-					feedindb = {'_id':feedurl,'title':"",'items':[]}
+					feedindb = {'_id':feedurl,'title':"",'items':[],'lastupdated':Helper.datetotimestamp(datetime.now()-timedelta(days=60))}
 
 				feedindb["title"] = feed_data["feed"]["title"]
 
-				if 'items' not in feedindb:
+				if feedindb.get('items',None) is None:
 					feedindb["items"] = []
+		
+				print feedindb
 					
 				for fitem in feed_data["entries"]:
 					fitemdb=None
@@ -589,27 +590,29 @@ class Feed(object):
 							pdate = mktime(parse(fitem['published']))
 						else:
 							pdate = Helper.datetotimestamp(datetime.today())
-							
-					self.log.info("processing feed (%s) published at (%s)", fitem['title'],datetime.fromtimestamp(pdate).isoformat())
-					for fi in feedindb["items"]:	
-						if fi is not None and fi["link"] == fitem["link"]:
-							fitemdb = fi
-							break
-					"""
-					src:-> http://www.seehuhn.de/pages/pdate#struct							
-					"""
-					# if not found then add it else do nothing
-					self.log.info("%s found in db" , "Not" if fitemdb is None else "")					
-					if fitemdb is None:			
 
-						feedindb["items"].append({
-							'_id': str(ObjectId()),	
-							'link':fitem["link"],
-							'title':fitem["title"],
-							'author': fitem.get("author",""),
-							'summary':fitem["summary"],
-							"published_date":pdate
-						})							
+					# consider only feeds that are newer than last time feed was updated 
+					# or else even archived old entries will keep on proping up
+					if pdate >= feedindb['lastupdated']:
+						self.log.info("processing feed (%s) published at (%s)", fitem['title'],datetime.fromtimestamp(pdate).isoformat())
+						for fi in feedindb["items"]:	
+							if fi is not None and fi["link"] == fitem["link"]:
+								fitemdb = fi
+								break
+						"""
+						src:-> http://www.seehuhn.de/pages/pdate#struct							
+						"""
+						# if not found then add it else do nothing
+						self.log.info("%s found in db" , "Not" if fitemdb is None else "")					
+						if fitemdb is None:			
+							feedindb["items"].append({
+								'_id': str(ObjectId()),	
+								'link':fitem["link"],
+								'title':fitem["title"],
+								'author': fitem.get("author",""),
+								'summary':fitem["summary"],
+								"published_date":pdate
+							})							
 						
 #				db.feeds.remove({'_id':feedurl})
 				#self.log.debug(feedindb)
@@ -620,6 +623,7 @@ class Feed(object):
 		
 			ret = Notification()
 			#self.log.info(feedindb)
+			print feedindb
 			ret.setdata(False,None, feedindb)
 			
 			return ret
