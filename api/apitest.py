@@ -1,5 +1,5 @@
 import unittest, pymongo, random, api , logging, sys
-from api import Helper,User,Feed
+from api import Helper,User,Feed,FeedGateway
 
 class UserTest(unittest.TestCase):
 
@@ -340,7 +340,55 @@ is None)
 		self.assertFalse(notobj.haserrors)
 		notobj = self.user.markallread(self.db,'a@b.com','http://feeds.feedburner.com/TheInvestorBlog',ts)
 		self.assertFalse(notobj.haserrors)		
+
+	def test_updatefeed(self):
+		import time
+		from datetime import datetime
+		feedurl = 'https://news.ycombinator.com/rss'
+		notobj = self.user.save(self.db,'a@b.com','abc','xyz')
+		self.assertFalse(notobj.haserrors)
+		notobj = self.user.addcategory(self.db,'a@b.com','fun')
+		self.assertFalse(notobj.haserrors)
+		notobj = self.user.addfeed(self.db,'a@b.com',feedurl,'fun',self.prxydict)
+		self.assertFalse(notobj.haserrors)
+		# print " This is going to sleep for 2 minutes. so pl. wait ..."
+		# time.sleep(120)
+		notobj = self.feed.updatefeed(self.db,feedurl,self.prxydict)
+		self.assertFalse(notobj.haserrors)
+		#now get updated feed data
+		notobj = FeedGateway.getfeed(feedurl,self.prxydict)
+		self.assertFalse(notobj.haserrors)		
+		#now check that latest feed is available in DB
+		feed_data = notobj.result
+		fitemdb=None		
+		for fitem in feed_data["entries"]:
+			# search if item is already available in DB
+			if fitem.has_key('published_parsed'):
+				pdate = fitem['published_parsed']
+			else:
+				if fitem.has_key('published'):
+					#http://stackoverflow.com/questions/9516025/parsing-datetime-in-python
+					pdate = parse(fitem['published'])
+				else:
+					pdate = datetime.today()
+
+			if fitemdb is None:
+				fitemdb = {'uri': fitem['link'],'pdate':pdate}
 		
+			if Helper.datetotimestamp(pdate) > Helper.datetotimestamp(fitemdb['pdate']):
+				fitemdb = {'uri': fitem['link'],'pdate':pdate}
+					
+		self.assertIsNotNone(fitemdb)		
+		# print fitemdb
+		# notobj = self.db.feed.find_one({'_id':feedurl})
+		# self.assertIsNotNone(notobj)				
+		# for itm in notobj['items']:
+			# print itm['link']
+			
+		notobj = self.db.feeds.find_one({'_id':feedurl,'items.link':fitemdb['uri']},{'_id':1})
+		self.assertIsNotNone(notobj)				
+		
+	# todo: Updatefeed test
 		
 if __name__ == '__main__':
 	logging.basicConfig(stream=sys.stderr)

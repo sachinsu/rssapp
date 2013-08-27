@@ -577,7 +577,7 @@ class Feed(object):
 				if feedindb.get('items',None) is None:
 					feedindb["items"] = []
 		
-				print feedindb
+				# print feedindb
 					
 				for fitem in feed_data["entries"]:
 					fitemdb=None
@@ -623,7 +623,7 @@ class Feed(object):
 		
 			ret = Notification()
 			#self.log.info(feedindb)
-			print feedindb
+			# print feedindb
 			ret.setdata(False,None, feedindb)
 			
 			return ret
