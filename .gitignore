@@ -21,6 +21,7 @@ lib
 lib64
 components
 env
+*.cfg
 
 # Installer logs
 pip-log.txt
