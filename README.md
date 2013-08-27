@@ -26,7 +26,8 @@ To Install:
 	
 5. nginx setup (Optional) 
 	a. setup nginx reverse proxy to forward requests to UI and api. for e.g.
-		'server { # simple reverse-proxy for rssreader
+		```
+		server { # simple reverse-proxy for rssreader
 			listen  9000;
 			server_name  localhost;
 			location / {
@@ -36,5 +37,6 @@ To Install:
 				 proxy_pass      http://localhost:3000;
 				 include        /etc/nginx/proxy.conf;
 					}
-			  }'
+			  }
+		```
 6. To run the application (from 'api' folder), 'honcho start'
