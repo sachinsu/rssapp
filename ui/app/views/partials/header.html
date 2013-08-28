@@ -1,11 +1,11 @@
 <!-- ref: https://gist.github.com/tfausak/2046174 -->
 <div data-ng-controller="LoginCtrl" class="navbar navbar-fixed-top">
       <div class="navbar-inner">
-	  <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-		<span class="icon-bar"></span>
-		<span class="icon-bar"></span>
-		<span class="icon-bar"></span>
-	  </button>
+		  <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		  </button>
         <div class="container-fluid">
           <a class="brand" href="#">Feed Reader</a>
           <div class="nav-collapse">
@@ -41,15 +41,17 @@
 					</li>
 				</ul>
 				<ul class="nav pull-right">
+					<li><span data-ng-show="loading"><i class="icon-spinner icon-spin"></i> Pl. wait...</span>
+					</li>
 					<li data-ng-show="factory.emailid.length != 0"><a href="#" data-ng-click="logout()">Logout {{factory.emailid}}</a></li>
 				</ul>
-			<span data-ng-hide="factory.emailid.length &gt; 0">
-				<form class="navbar-form pull-right">
-					<input class="span2" type="text" data-ng-model="user.emailid" required placeholder="Email">
-					<input class="span2" type="password"  data-ng-model="user.pwd" required  placeholder="Password">
-					<button data-ng-click="login(user.emailid,user.emailid,user.pwd)" class="btn">Sign in/register</button>
-				</form>			
-			</span>
+				<span data-ng-hide="factory.emailid.length &gt; 0">
+					<form class="navbar-form pull-right">
+						<input class="span2" type="text" data-ng-model="user.emailid" required placeholder="Email">
+						<input class="span2" type="password"  data-ng-model="user.pwd" required  placeholder="Password">
+						<button data-ng-click="login(user.emailid,user.emailid,user.pwd)" class="btn">Sign in/register</button>
+					</form>			
+				</span>
           </div><!--/.nav-collapse -->
         </div>
       </div>

@@ -185,7 +185,6 @@ angular.module('projectApp')
 							{ type: 'error', msg: 'Category addition failed' }
 						  ];
 				});
-				
 	}
   })
   .controller('AddFeedCtrl',function($scope,dialog,rssfactory){
@@ -200,7 +199,6 @@ angular.module('projectApp')
 							{ type: 'error', msg: 'Feed addition failed' }
 						  ];
 				});
-				
 	}
   })
   .controller('SideBarCtrl', function($scope,$dialog,rssfactory){ 

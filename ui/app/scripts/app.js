@@ -180,7 +180,6 @@ var rssfactory = function($rootScope,$http,base64){
 			});
 			};			
 
-
 	factory.getfeeds = function(url,callback,errcallback){
 			console.log("get feeds");
 
@@ -433,7 +432,6 @@ var rssfactory = function($rootScope,$http,base64){
 	return factory;
 }; 
 
-
 rssfactory.inject = ["$rootScope","$http",'base64'];
 
 //Src: http://victorblog.com/2012/12/20/make-angularjs-http-service-behave-like-jquery-ajax/
@@ -503,7 +501,27 @@ var app = angular.module('projectApp', ['ui.bootstrap'], function($httpProvider)
         redirectTo: '/'
       });
   }).factory('rssfactory',rssfactory)
-	.factory('base64',base64);
+	.factory('base64',base64)
+	.config(function ($httpProvider) {
+	 $httpProvider.responseInterceptors.push(function ($rootScope) {
+		  $rootScope.numLoadings = 0;
+		  $rootScope.loading = false;
+		  return function (promise) {
+			$rootScope.numLoadings++;
+			$rootScope.loading = true;
+			// make sure the loading screen is visible
+			var hide = function (r) {
+			  if ((--$rootScope.numLoadings)===0){
+				//console.log('hide the loading screen');
+				$rootScope.loading = false;
+			  }
+			  return r;
+			};
+			return promise.then(hide, hide);
+		  };
+		});
+});
+	
 
 
 app.config(['$httpProvider', function($httpProvider) {  
