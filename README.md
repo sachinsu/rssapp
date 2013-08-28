@@ -20,12 +20,13 @@ To Install:
 	
 4. in 'ui' folder,
 	a. UI project uses yeoman 
-	b. run "npm install & bower install" to install dependancies 
+	b. run 'npm install & bower install' to install dependancies 
 	c. modify gruntfile.js to change http port, if needed. (under "connect -> options")
 	
 	
 5. nginx setup (Optional) 
 	a. setup nginx reverse proxy to forward requests to UI and api. for e.g.
+		```
 		server { # simple reverse-proxy for rssreader
 			listen  9000;
 			server_name  localhost;
@@ -37,4 +38,5 @@ To Install:
 				 include        /etc/nginx/proxy.conf;
 					}
 			  }
-6. To run the application (from 'api' folder), "honcho start"
+		```
+6. To run the application (from 'api' folder), 'honcho start'
