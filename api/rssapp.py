@@ -147,7 +147,12 @@ app = make_rest_app(__name__)
 defpath = '/api'
 app.secret_key = "sfdusyfsyf37487347hijehfjshfksf983843"
 db = conn.dbcon(app) 
-	
+
+@app.route('/')
+def send_homelink():
+	return redirect('static/app/index.html') 
+
+
 # define routes
 # https://en.wikipedia.org/wiki/Representational_state_transfer
 # Flask+REST, http://blog.miguelgrinberg.com/post/designing-a-restful-api-with-python-and-flask
@@ -448,4 +453,4 @@ if __name__ == '__main__':
 	config = os.path.join(app.root_path, 'dev.cfg')
 	app.config.from_pyfile(config)	
 	app.logger.addHandler(handler)
-	app.run(host="0.0.0.0",port=3000,debug=True)
+	app.run(host="0.0.0.0",port=9000,debug=True)

@@ -22,9 +22,12 @@ lib64
 components
 env
 *.cfg
+api/static
 
 # Installer logs
 pip-log.txt
+cron-updateall.log
+cron-archiver.log
 
 # Unit test / coverage reports
 .coverage

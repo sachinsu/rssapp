@@ -4,6 +4,8 @@ import json, logging
 import feedparser, urllib2
 import time,StringIO, ConfigParser
 from datetime import datetime
+import os 
+
 """
 - Users {
 	id : <email>,
@@ -528,7 +530,7 @@ class Feed(object):
 		# loop through feeds that are not updated in last 30 mins
 		#http://stackoverflow.com/questions/4541629/how-to-create-a-datetime-equal-to-15-minutes-ago
 		try:
-			tilltime = Helper.datetotimestamp(datetime.now()-timedelta(days=15))
+			tilltime = Helper.datetotimestamp(datetime.now()-timedelta(minutes=30))
 			feedlist = []
 			for feed in db.feeds.find({'lastupdated':{'$lt':tilltime}},{'items':0}):
 				# and call updatefeed for each feedurl
@@ -761,6 +763,10 @@ class Helper(object):
 	@classmethod
 	def getconfigvalue(cls,filepath, key,defvalue):
 		retval = None
+		
+		if key == "DATABASE_URI": 
+			if os.getenv("OPENSHIFT_MONGODB_DB_URL","nil") != "nil":
+				return os.getenv("OPENSHIFT_MONGODB_DB_URL")
 		
 		ini_str = '[root]\n' + open(filepath, 'r').read()
 		ini_fp = StringIO.StringIO(ini_str)

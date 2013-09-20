@@ -1,7 +1,8 @@
 import pymongo
 from api import Feed,Notification,Helper
-import conn, logging, sys, os,time
+import conn, logging, sys, os,time,logging.handlers
 from datetime import timedelta , datetime
+import sys 
 
 class Scheduleit():
 
@@ -22,15 +23,28 @@ class Scheduleit():
 		
 	
 	def schedule(self):
-		while True:
+		if len(sys.argv) > 1 and sys.argv[1].lower()=='cron':
 			self.log.info("Executing updateall at %s" % (datetime.now()))
-			notobj = self.feed.updateall(self.db,self.prxydict)
-			time.sleep(10*60)
+			notobj = self.feed.updateall(self.db,self.prxydict)         
+		else:
+			while True:
+				self.log.info("Executing updateall at %s" % (datetime.now()))
+				notobj = self.feed.updateall(self.db,self.prxydict)
+				time.sleep(10*60)
 
 if __name__ == '__main__':
-	logging.basicConfig(stream=sys.stdout)
+        if len(sys.argv) > 1 and sys.argv[1].lower()=='cron':
+		handler = logging.handlers.RotatingFileHandler("logs/cron-updateall.log", backupCount=50)        	
+		logging.getLogger('api').addHandler(handler) 
+		logging.getLogger('Feed').addHandler(handler)
+		logging.getLogger('scheduleit').addHandler(handler)
+        else:
+		logging.basicConfig(stream=sys.stdout)
+		
 	logging.getLogger('api').setLevel(logging.DEBUG)
 	logging.getLogger('Feed').setLevel(logging.DEBUG)
+	logging.getLogger('scheduleit').setLevel(logging.INFO)		
+	
 	s = Scheduleit()
 	s.setUp()
 	s.schedule()
