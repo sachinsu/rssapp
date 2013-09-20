@@ -44,8 +44,8 @@ if __name__ == '__main__':
         else:
 		logging.basicConfig(stream=sys.stdout)
 		
-	logging.getLogger('api').setLevel(logging.DEBUG)
-	logging.getLogger('Feed').setLevel(logging.DEBUG)
+	logging.getLogger('api').setLevel(logging.INFO)
+	logging.getLogger('Feed').setLevel(logging.INFO)
 	logging.getLogger('scheduleit').setLevel(logging.INFO)		
 	
 	s = Scheduleit()
