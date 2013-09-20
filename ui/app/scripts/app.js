@@ -520,7 +520,13 @@ var app = angular.module('projectApp', ['ui.bootstrap'], function($httpProvider)
 			return promise.then(hide, hide);
 		  };
 		});
-});
+}).directive('focus', function () {
+  return function (scope, element, attrs) {
+      attrs.$observe('focus', function (newValue) {
+            newValue === 'true' && element[0].focus();
+                });
+                  }
+                  });
 	
 
 

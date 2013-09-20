@@ -47,7 +47,7 @@
 				</ul>
 				<span data-ng-hide="factory.emailid.length &gt; 0">
 					<form class="navbar-form pull-right">
-						<input class="span2" type="text" data-ng-model="user.emailid" required placeholder="Email">
+						<input class="span2" type="text" data-ng-model="user.emailid" focus="true" required placeholder="Email">
 						<input class="span2" type="password"  data-ng-model="user.pwd" required  placeholder="Password">
 						<button data-ng-click="login(user.emailid,user.emailid,user.pwd)" class="btn">Sign in/register</button>
 					</form>			

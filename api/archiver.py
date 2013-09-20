@@ -7,12 +7,11 @@ import sys
 class Archiver():
 
 	def setUp(self):
-			
-		dburl = Helper.getconfigvalue('dev.cfg','DATABASE_URI',None)
-		dbname = Helper.getconfigvalue('dev.cfg','DBNAME',None)		
-
+		fpath  = os.path.realpath(__file__)
+                cfgfile = os.path.dirname(fpath) + "/dev.cfg"
+                dburl = Helper.getconfigvalue(cfgfile,'DATABASE_URI',None)
+		dbname = Helper.getconfigvalue(cfgfile,'DBNAME',None)	
 		self.db = pymongo.MongoClient(dburl)[dbname]
-	
 		self.feed = Feed()
 		self.log = logging.getLogger('archiver')
 	
@@ -29,7 +28,8 @@ class Archiver():
 if __name__ == '__main__':
 
         if len(sys.argv) > 1 and sys.argv[1].lower()=='cron':
-		handler = logging.handlers.RotatingFileHandler("logs/cron-archiver.log", backupCount=50)
+                fpath  = os.path.realpath(__file__)
+		handler = logging.handlers.RotatingFileHandler(os.path.dirname(fpath) + "/logs/cron-archiver.log", backupCount=50)
                 logging.getLogger('api').addHandler(handler)
                 logging.getLogger('Feed').addHandler(handler)
                 logging.getLogger('archiver').addHandler(handler)

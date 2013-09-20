@@ -7,16 +7,17 @@ import sys
 class Scheduleit():
 
 	def setUp(self):
-		prxyval = Helper.getconfigvalue('dev.cfg','http_proxy',None)
-		
+		fpath  = os.path.realpath(__file__)
+		cfgfile = os.path.dirname(fpath) + '/dev.cfg'
+		prxyval = Helper.getconfigvalue(cfgfile,'http_proxy',None)
+
 		if prxyval is not None:
 			self.prxydict = {'http_proxy':prxyval}
 		else:
 			self.prxydict = None
 			
-		dburl = Helper.getconfigvalue('dev.cfg','DATABASE_URI',None)
-		dbname = Helper.getconfigvalue('dev.cfg','DBNAME',None)		
-
+		dburl = Helper.getconfigvalue(cfgfile,'DATABASE_URI',None)
+		dbname = Helper.getconfigvalue(cfgfile,'DBNAME',None)	
 		self.db = pymongo.MongoClient(dburl)[dbname]
 		self.feed = Feed()
 		self.log = logging.getLogger('scheduleit')
@@ -33,8 +34,10 @@ class Scheduleit():
 				time.sleep(10*60)
 
 if __name__ == '__main__':
+	
         if len(sys.argv) > 1 and sys.argv[1].lower()=='cron':
-		handler = logging.handlers.RotatingFileHandler("logs/cron-updateall.log", backupCount=50)        	
+        	fpath  = os.path.realpath(__file__)
+		handler = logging.handlers.RotatingFileHandler(os.path.dirname(fpath) + "/logs/cron-updateall.log", backupCount=50)        	
 		logging.getLogger('api').addHandler(handler) 
 		logging.getLogger('Feed').addHandler(handler)
 		logging.getLogger('scheduleit').addHandler(handler)
