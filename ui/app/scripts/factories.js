@@ -413,80 +413,10 @@ var rssfactory = function($rootScope,$http,base64){
 rssfactory.inject = ["$rootScope","$http",'base64'];
 
 //Src: http://victorblog.com/2012/12/20/make-angularjs-http-service-behave-like-jquery-ajax/
-var app = angular.module('projectApp', ['ui.bootstrap'], function($httpProvider)
-{
-  // Use x-www-form-urlencoded Content-Type
-  $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
- 
- /* 
-     * The workhorse; converts an object to x-www-form-urlencoded serialization.
-     * @param {Object} obj
-     * @return {String}
-  // Override $http service's default transformRequest
-  $httpProvider.defaults.transformRequest = [function(data)
-  {
-    var param = function(obj)
-    {
-      var query = '';
-      var name, value, fullSubName, subName, subValue, innerObj, i;
-      
-      for(name in obj)
-      {
-        value = obj[name];
-        
-        if(value instanceof Array)
-        {
-          for(i=0; i<value.length; ++i)
-          {
-            subValue = value[i];
-            fullSubName = name + '[' + i + ']';
-            innerObj = {};
-            innerObj[fullSubName] = subValue;
-            query += param(innerObj) + '&';
-          }
-        }
-        else if(value instanceof Object)
-        {
-          for(subName in value)
-          {
-            subValue = value[subName];
-            fullSubName = name + '[' + subName + ']';
-            innerObj = {};
-            innerObj[fullSubName] = subValue;
-            query += param(innerObj) + '&';
-          }
-        }
-        else if(value !== undefined && value !== null)
-        {
-          query += encodeURIComponent(name) + '=' + encodeURIComponent(value) + '&';
-        }
-      }
-      
-      return query.length ? query.substr(0, query.length - 1) : query;
-    };
-    
-    return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
-  }];
-*/  
-  }
-).config(function ($routeProvider) {
-    $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
-      })
-      .otherwise({
-        redirectTo: '/'
-      });
-  }).factory('rssfactory',rssfactory)
+var app = angular.module('projectApp.factories', []).factory('rssfactory',rssfactory)
 	.factory('base64',base64);
 
 
-app.config(['$httpProvider', function($httpProvider) {  
-        $httpProvider.defaults.useXDomain = true;
-        delete $httpProvider.defaults.headers.common['X-Requested-With'];
-  }]);
-  
 /* Todo,
  - error display section, visibility:hidden check instead of display none.
  - Mark all as Read & Mark as unread

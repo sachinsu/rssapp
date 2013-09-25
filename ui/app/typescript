@@ -1,0 +1,42 @@
+Script started on Wednesday 25 September 2013 04:53:41 PM IST
+ubuntu@ubuntu:~/projects/app/ui/app$ lssudo service nginx startls[Kcd s[K[K[K[K[K[Kcd scripts/
+ubuntu@ubuntu:~/projects/app/ui/app/scripts$ cd scripts/ls[Ksudo service nginx startop [13Pcat defaultls[Ksudo rm default~[5P[C[C[C[C[C[C[C[C[C[C[Cls[Kclear[3Plsrm default~[5@sudo [C[C[C[C[C[C[C[C[C[C[Cls[Kcat defaultsudo service nginx stop artls[Kcd scripts/[Kcd scripts/ls[Ksudo service nginx startop [13Pcat defaultls[Ksudo rm default~[5P[C[C[C[C[C[C[C[C[C[C[Cls[Kcleard nginx/sites-enabled/[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Kcp /e[Kmedia/win-share/app/ui/app/scrippts/app.js 
+cp: missing destination file operand after `/media/win-share/app/ui/app/scripts/app.js'
+Try `cp --help' for more information.
+ubuntu@ubuntu:~/projects/app/ui/app/scripts$ cp /media/win-share/app/ui/app/scrippts/app.js  .
+ubuntu@ubuntu:~/projects/app/ui/app/scripts$ ls
+app.js  app.js~  [0m[01;34mcontrollers[0m  [01;32mfactories.js[0m
+ubuntu@ubuntu:~/projects/app/ui/app/scripts$ cd..[K[K 
+ubuntu@ubuntu:~$ 
+ubuntu@ubuntu:~$ ^C
+ubuntu@ubuntu:~$ cd projects/[K[K[K[K[K[K[K[K[K[K[K[Kclear
+[H[Jubuntu@ubuntu:~$ cd projects/cda [K[K[K[K
+ubuntu@ubuntu:~/projects$ ap[K[Kcd app/api/
+ubuntu@ubuntu:~/projects/app/api$ source env/in[K[Kbin/activate
+(env)ubuntu@ubuntu:~/projects/app/api$ source  env[K[K[K[K[K[K[K[K[K[K[Kpyty[Khn[Kon rssapp.py 
+ * Running on http://0.0.0.0:9000/
+ * Restarting with reloader
+10.0.2.2 - - [25/Sep/2013 17:12:18] "GET / HTTP/1.1" 302 -
+10.0.2.2 - - [25/Sep/2013 17:23:33] "GET / HTTP/1.1" 302 -
+10.0.2.2 - - [25/Sep/2013 17:23:33] "GET /static/app/index.html HTTP/1.1" 200 -
+10.0.2.2 - - [25/Sep/2013 17:23:33] "GET /static/app/styles/main.css HTTP/1.1" 200 -
+10.0.2.2 - - [25/Sep/2013 17:23:33] "GET /static/app/components/angular/angular.js HTTP/1.1" 200 -
+10.0.2.2 - - [25/Sep/2013 17:23:33] "GET /static/app/components/bootstrap/docs/assets/js/bootstrap.min.js HTTP/1.1" 200 -
+10.0.2.2 - - [25/Sep/2013 17:23:33] "GET /static/app/components/lodash/dist/lodash.min.js HTTP/1.1" 200 -
+10.0.2.2 - - [25/Sep/2013 17:23:33] "GET /static/app/components/angular-bootstrap/ui-bootstrap-tpls.min.js HTTP/1.1" 200 -
+10.0.2.2 - - [25/Sep/2013 17:23:33] "GET /static/app/scripts/app.js HTTP/1.1" 200 -
+10.0.2.2 - - [25/Sep/2013 17:23:33] "GET /static/app/scripts/factories.js HTTP/1.1" 200 -
+10.0.2.2 - - [25/Sep/2013 17:23:33] "GET /static/app/scripts/controllers/main.js HTTP/1.1" 200 -
+10.0.2.2 - - [25/Sep/2013 17:32:30] "GET / HTTP/1.1" 302 -
+10.0.2.2 - - [25/Sep/2013 17:32:50] "GET / HTTP/1.1" 302 -
+10.0.2.2 - - [25/Sep/2013 17:32:50] "GET /static/app/index.html HTTP/1.1" 200 -
+10.0.2.2 - - [25/Sep/2013 17:32:50] "GET /static/app/styles/main.css HTTP/1.1" 200 -
+10.0.2.2 - - [25/Sep/2013 17:32:50] "GET /static/app/components/angular/angular.js HTTP/1.1" 200 -
+10.0.2.2 - - [25/Sep/2013 17:32:50] "GET /static/app/components/bootstrap/docs/assets/js/bootstrap.min.js HTTP/1.1" 200 -
+10.0.2.2 - - [25/Sep/2013 17:32:50] "GET /static/app/components/lodash/dist/lodash.min.js HTTP/1.1" 200 -
+10.0.2.2 - - [25/Sep/2013 17:32:50] "GET /static/app/components/angular-bootstrap/ui-bootstrap-tpls.min.js HTTP/1.1" 200 -
+10.0.2.2 - - [25/Sep/2013 17:32:50] "GET /static/app/scripts/factories.js HTTP/1.1" 200 -
+10.0.2.2 - - [25/Sep/2013 17:32:50] "GET /static/app/scripts/app.js HTTP/1.1" 200 -
+10.0.2.2 - - [25/Sep/2013 17:32:50] "GET /static/app/scripts/controllers/main.js HTTP/1.1" 200 -
+10.0.2.2 - - [25/Sep/2013 17:32:53] "GET /static/app/views/main.html HTTP/1.1" 200 -
+10.0.2.2 - - [25/Sep
