@@ -40,3 +40,5 @@ To Install:
 			  }
 		```
 6. To run the application (from 'api' folder), 'honcho start'
+
+Check sample screenshots at https://github.com/sachinsu/rssapp/wiki/Screenshots
