@@ -24,8 +24,10 @@ To Install:
 	c. modify gruntfile.js to change http port, if needed. (under "connect -> options")
 	
 	
-5. nginx setup (Optional) 
-	a. setup nginx reverse proxy to forward requests to UI and api. for e.g.
+5. For development mode, ui server can be run using grunt (from 'ui' folder) and parallely running REST api. To avoid issues with cross domain requests, 
+   following is nginx proxy settings,
+	nginx setup (Optional) 
+		a. setup nginx reverse proxy to forward requests to UI and api. for e.g.
 		```
 		server { # simple reverse-proxy for rssreader
 			listen  9000;
@@ -39,6 +41,8 @@ To Install:
 					}
 			  }
 		```
-6. To run the application (from 'api' folder), 'honcho start'
+          To run the application (from 'api' folder), 'honcho start'
+          
+    Alternatively, ui folder can be linked ```sudo ln -s ..``` within api folder and application can be run as python app itself.
 
 Check sample screenshots at https://github.com/sachinsu/rssapp/wiki/Screenshots
