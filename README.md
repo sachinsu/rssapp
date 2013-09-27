@@ -40,8 +40,7 @@ To Install:
 					}
 			  }
 		```
-           To run the application (from 'api' folder), `honcho start`
-          
+           To run the application (from 'api' folder), `honcho start`		       
          * Alternatively, ui folder can be linked `sudo ln -s ..` within api folder and application can be run as python app itself by issuing ```python rssapp.py``` from 'api' folder. 
            Batch jobs to update , archive feeds can be configured as cron jobs. 
            Sample cron job entries are (in 'api' folder),
