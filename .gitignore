@@ -20,6 +20,7 @@ develop-eggs
 lib
 lib64
 components
+bower_components
 env
 *.cfg
 api/static
