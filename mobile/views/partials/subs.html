@@ -1,0 +1,28 @@
+<div data-ng-include data-src="'views/partials/header.html'"  onload="curview='subs'"></div>
+<div class="topcoat-list">
+	<form>
+		Categories: <select ng-model="curcategory" ng-options="cat for cat in factory.categories">
+		</select>
+	</form>	
+	<h3 class="topcoat-list__header">Subscriptions</h3>
+	<ul class="topcoat-list__container" data-ng-repeat="feed in factory.feedlist">
+		<li class="topcoat-list__item" data-ng-repeat="itm in feed.items" data-ng-show="feed.category==curcategory"><a data-ng-show="itm.unreadcount <= 0" href="#" data-ng-click="getfeeds(itm.link,itm.title,feed.category)"><i class="icon-rss"></i>{{itm.title}}</a>
+						<a data-ng-show="itm.unreadcount > 0" href="javascript:void(0)" data-ng-click="getfeeds(itm.link,itm.title,feed.category)"><i class="icon-rss"></i><b>{{itm.title}}&nbsp;({{itm.unreadcount}})</b></a>	</li>
+		</li>
+	</ul>	
+	
+	<div class="topcoat-button-bar full">
+	   <div class="topcoat-button-bar__item">
+		 <button class="topcoat-button-bar__button full">Add (Cat)</button>
+	   </div>
+	   <div class="topcoat-button-bar__item">
+		 <button class="topcoat-button-bar__button full">Remove (Cat)</button>
+	   </div>
+	   <div class="topcoat-button-bar__item">
+		 <button class="topcoat-button-bar__button full">Add Feed</button>
+	   </div>
+	   <div class="topcoat-button-bar__item">
+		 <button class="topcoat-button-bar__button full">Remove Feed</button>
+	   </div>
+	</div>	
+</div>

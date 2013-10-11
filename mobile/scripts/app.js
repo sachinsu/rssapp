@@ -1,6 +1,6 @@
 'use strict';
 //Src: http://victorblog.com/2012/12/20/make-angularjs-http-service-behave-like-jquery-ajax/
-var app = angular.module('projectApp', ['projectApp.factories','ui.bootstrap'], function($httpProvider)
+var app = angular.module('projectApp', ['ngRoute','projectApp.factories'], function($httpProvider)
 {
   // Use x-www-form-urlencoded Content-Type
   $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
@@ -8,7 +8,23 @@ var app = angular.module('projectApp', ['projectApp.factories','ui.bootstrap'], 
 ).config(function ($routeProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'views/main.html',
+        templateUrl: 'views/partials/main.html',
+        controller: 'MainCtrl'
+      })
+      .when('/login', {
+        templateUrl: 'views/partials/login.html',
+        controller: 'MainCtrl'
+      })
+      .when('/subs', {
+        templateUrl: 'views/partials/subs.html',
+        controller: 'MainCtrl'
+      })
+      .when('/posts', {
+        templateUrl: 'views/partials/posts.html',
+        controller: 'MainCtrl'
+      })
+      .when('/post', {
+        templateUrl: 'views/partials/post.html',
         controller: 'MainCtrl'
       })
       .otherwise({

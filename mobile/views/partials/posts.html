@@ -1,0 +1,23 @@
+<div data-ng-include data-src="'views/partials/header.html'"  onload="curview='posts'"></div>
+<div class="topcoat-list">
+	<h3 class="topcoat-list__header">Posts</h3>
+	<ul class="topcoat-list__container">
+		<li class="topcoat-list__item" data-ng-repeat="itm in factory.feeddata">
+			<a  href="javascript:void(0)" data-ng-click="showpost(itm)">{{itm.title}}</a>
+		</li>
+	</ul>	
+	<div class="topcoat-button-bar full">
+	   <div class="topcoat-button-bar__item">
+		 <button class="topcoat-button-bar__button full" data-ng-click="getprevpage()">prev.</button>
+	   </div>
+	   <div class="topcoat-button-bar__item">
+		 <button class="topcoat-button-bar__button full" data-ng-click="getnextpage()">Next</button>
+	   </div>
+	   <div class="topcoat-button-bar__item">
+		 <button class="topcoat-button-bar__button full">Unread</button>
+	   </div>
+	   <div class="topcoat-button-bar__item">
+		 <button class="topcoat-button-bar__button full" data-ng-click="go('/subs')">Back</button>
+	   </div>
+	</div>	
+</div>

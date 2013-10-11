@@ -1,0 +1,11 @@
+<div data-ng-include data-src="'views/partials/header.html'" onload="curview='login'"></div>
+<div class="topcoat-list__container">
+	<h3 class="topcoat-list__header">Login here</h3>
+	<form>
+		<input id="email" name="email" type="text" data-ng-model="user.email" class="topcoat-text-input" placeholder="email" value="">
+		<br><br>
+		<input id="pwd" name="pwd" type="password" data-ng-model="user.pwd" class="topcoat-text-input" value="">
+		<br><br>
+		<button data-ng-click="login(user.email,user.pwd)" class="topcoat-button--cta" >Login/register</button>	
+	</form>
+</div>

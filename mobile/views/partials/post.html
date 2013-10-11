@@ -1,0 +1,15 @@
+<div data-ng-include data-src="'views/partials/header.html'"  onload="curview='post'"></div>
+<div id="content" class="max-width">
+	<article class="component">
+		<header>{{factory.itm.title}} [{{factory.itm.published}}]</header>
+		<section class="component" data-ng-bind-html="factory.itm.trustsummary"></section>
+	</article>
+</div>
+<div class="topcoat-button-bar full">
+   <div class="topcoat-button-bar__item">
+	 <button class="topcoat-button-bar__button full">Mark Unread</button>
+   </div>
+   <div class="topcoat-button-bar__item">
+	 <button class="topcoat-button-bar__button full" data-ng-click="go('/posts')">Back</button>
+   </div>
+</div>	

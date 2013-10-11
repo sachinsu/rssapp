@@ -448,12 +448,16 @@ class User(object):
 
 		return res
 	
-	def getfeeddata(self,db,email,feedurl):
+	def getfeeddata(self,db,email,feedurl,pageno=0,pagesize=0):
 		from operator import itemgetter
 		# retrieve feed item list for user by joining results from user and feeds 
-		# print("Get Feed Data for %s, %s" % (email, feedurl))
+		print("Get Feed Data for %s, %s, %s, %s " % (email, feedurl,pageno,pagesize))
 		self.log.info("Get Feed Data for %s, %s",email, feedurl)
 		allfeeds = feedurl is None or feedurl==''
+		ispaging= pageno != 0 and pagesize != 0
+		# if ispaging:
+			# print "skip value " 
+			# print int(pageno)-1*int(pagesize)
 		try:
 			if allfeeds:
 				# User has opted to view "All" feeds				
@@ -469,6 +473,7 @@ class User(object):
 				# get 
 			else:
 				feeditems = db.feeds.find({'_id':feedurl},{'_id':0,'title':1,'items':1},sort=[('published_date',2),('title',1)])
+
 				useritems = list(db.users.find({'_id':email,'subs._id':feedurl},{'subs':1,'_id':0}))						
 			#self.log.debug("in data")
 			#self.log.debug(feeditems)
@@ -479,11 +484,28 @@ class User(object):
 				res.setdata(True,"Incorrect feed url or mail id",None)
 				return res
 
+			# print "** doing paging"
+
+			# if pageno != 0 and pagesize != 0:
+				# print "in paging applying skip and limit"
+				# feeditems = feeditems
+			
+			
+			# print "now iterating"
+			if ispaging:
+				pagesize = int(pagesize)
+				pageno = (int(pageno) -1)* pagesize
+
+			
 			feedlist=[]
 			for feed in feeditems:
 				# print(feed)
-				# print("****")
 				for fitem in feed['items']:
+					print("****")
+					print pagesize
+					if ispaging and pagesize <= 0:
+						break
+
 					useritem = None
 					if fitem is not None:
 						if fitem.has_key('published_date'):
@@ -498,7 +520,13 @@ class User(object):
 						if allfeeds:
 							fitem["feedtitle"] = feed['title'] 
 							
+						if ispaging and pageno > 0: 
+							pageno = pageno -1
+							continue
 						feedlist.append(fitem)
+						if ispaging and pagesize > 0:
+							pagesize = pagesize -1 
+				
 					# print("***** done ******")
 
 			res =  Notification()

@@ -238,7 +238,15 @@ def feeddetails(**kwargs):
 	# app.logger.info(kwargs['email'])
 	# app.logger.info(request.args.get('feedurl'))	
 	user = User()
-	nobj = user.getfeeddata(db.connection,kwargs['email'],request.args.get('feedurl'))
+	print "*** printing request params"
+	print request.args.get('pageno')
+	print request.args.get('pagesize')	
+	if request.args.get('pageno') is not None and request.args.get('pagesize') is not None:
+		nobj = user.getfeeddata(db.connection,kwargs['email'],request.args.get('feedurl'),
+		request.args.get('pageno'),request.args.get('pagesize'))		
+	else:
+		nobj = user.getfeeddata(db.connection,kwargs['email'],request.args.get('feedurl'))
+		
 	return buildresponse(nobj,{'http_status':200})
 
 	

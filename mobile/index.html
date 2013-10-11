@@ -5,37 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <title>rssapp</title>
     <link href="css/topcoat-mobile-light.min.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">	
 </head>
+<body ng-app="projectApp">
+	<!--[if lt IE 7]>
+      <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+    <![endif]-->
+	<div data-ng-view></div>
 
-<body>
-
-<div class="topcoat-navigation-bar">
-   <div class="topcoat-navigation-bar__item left quarter">
-       <a class="topcoat-icon-button--quiet">
-         <span class="topcoat-icon topcoat-icon--menu-stack"></span>
-       </a>
-   </div>
-   <div class="topcoat-navigation-bar__item center half">
-       <h1 class="topcoat-navigation-bar__title">rssapp</h1>
-   </div>
-   <div class="topcoat-navigation-bar__item right quarter">
-       <a class="topcoat-icon-button--quiet">
-         <span class="topcoat-icon topcoat-icon--edit"></span>
-       </a>
-   </div>
-</div>
-
-<div class="topcoat-list__container">
-	<h3 class="topcoat-list__header">Header</h3>
-	<ul class="topcoat-list">
-		<li class="topcoat-list__item--first">Item</li>
-		<li class="topcoat-list__item">Item</li>
-		<li class="topcoat-list__item">Item</li>
-		<li class="topcoat-list__item">
-			<button class="topcoat-button--large--cta">Awesome</button>
-		</li>
-	</ul>
-</div>
-
+	<script src="bower_components/zepto/zepto.min.js"></script>	
+	<script src="bower_components/angular/angular.min.js"></script>
+	<script src="bower_components/angular-route/angular-route.min.js"></script>	
+    <!-- build:js scripts/scripts.js -->
+    <script src="/static/app/scripts/factories.js"></script>	
+    <script src="scripts/app.js"></script>
+    <script src="scripts/controllers/main.js"></script>
 </body>
 </html>

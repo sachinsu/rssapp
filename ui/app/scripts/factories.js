@@ -107,7 +107,7 @@ var base64 = function(){
 	return obj;
 };
 
-var rssfactory = function($rootScope,$http,base64){
+var rssfactory = function($rootScope,$http,base64,$log){
 	var baseurl = "/api/";
 
 	var factory={emailid:"",pwd:"",feedlist:null,feed:null,categories:null};
@@ -180,9 +180,36 @@ var rssfactory = function($rootScope,$http,base64){
 			});
 			};			
 
+	factory.getpagefeeds = function(url,pgno,pgsize,callback,errcallback){
+			$log.log("get feeds with paging");
+
+			$http({method:'GET',
+					url: baseurl + 'feed'
+					,params: {feedurl: url,pageno: pgno,pagesize:pgsize}
+					,headers: factory.buildheaders(true)
+					,withCredentials: true
+			}).success(function(d,s,h,c){
+					//sample: ({errors:[], result:null, success:true})			
+					console.log("in success");
+					if (d.success)
+						factory.safeApply($rootScope,function() { callback(d.result);});
+					else
+						factory.safeApply($rootScope,function(){ errcallback(d.errors,null,null,null); });	
+			}).error(function(d,s,h,c){
+					//todo: show error 
+					$log.log("in error");
+					$log.log(d);
+					$log.log(s);
+					$log.log(h);
+					$log.log(c);
+					factory.safeApply($rootScope,function(){ errcallback(d,s,h,c); });
+			});
+		};			
+			
+			
 
 	factory.getfeeds = function(url,callback,errcallback){
-			console.log("get feeds");
+			$log.log("get feeds");
 
 			$http({method:'GET',
 					url: baseurl + 'feed'
@@ -199,13 +226,13 @@ var rssfactory = function($rootScope,$http,base64){
 			}).error(function(d,s,h,c){
 					//todo: show error 
 					console.log("in error");
-					 console.log(d);
-					 console.log(s);
-					 console.log(h);
-					 console.log(c);
+					console.log(d);
+					console.log(s);
+					console.log(h);
+					console.log(c);
 					factory.safeApply($rootScope,function(){ errcallback(d,s,h,c); });
 			});
-			};			
+		};			
 
 	factory.getallfeeds = function(url,callback,errcallback){
 
