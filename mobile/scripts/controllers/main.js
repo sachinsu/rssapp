@@ -74,8 +74,46 @@ angular.module('projectApp')
 	$scope.showpost = function(itm){
 		$scope.factory.itm = itm;
 		$scope.factory.itm.trustsummary =  $sce.trustAsHtml(itm.summary);
-		$log.log(itm);
+		// $log.log(itm);
 		$scope.go('/post');
-	}
+	};
+	
+	$scope.prevpost = function(lnk){ 
+		$log.log("prev post " + lnk);
+		var i = 0;
+		for (i=0;i<rssfactory.feeddata.length;i++)
+		{
+			if (rssfactory.feeddata[i].link == lnk) 
+				break;
+		}
+		
+		i--;
+		
+		if (i >= 0) {
+			$scope.factory.itm = rssfactory.feeddata[i];
+			$scope.factory.itm.trustsummary =  $sce.trustAsHtml($scope.factory.itm.summary);
+		}
+		$log.log($scope.factory.itm);		
+	};
+
+	$scope.nextpost = function(lnk){ 
+		$log.log("next post " + lnk);	
+		var i = 0;
+		for (i=0;i<rssfactory.feeddata.length;i++)
+		{
+			if (rssfactory.feeddata[i].link == lnk) 
+				break;
+		}
+		
+		i++;
+		
+		if (i < rssfactory.feeddata.length) {
+			$scope.factory.itm = rssfactory.feeddata[i];
+			$scope.factory.itm.trustsummary =  $sce.trustAsHtml($scope.factory.itm.summary);
+		}
+		$log.log($scope.factory.itm);		
+	};
+
 	
   })
+  

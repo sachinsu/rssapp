@@ -1,4 +1,4 @@
-<div data-ng-include data-src="'views/partials/header.html'"  onload="curview='post'"></div>
+<div data-ng-include data-src="'views/partials/header.html'" onload="curview='post'"></div>
 <div id="content" class="max-width">
 	<article class="component">
 		<header>{{factory.itm.title}} [{{factory.itm.published}}]</header>
@@ -6,6 +6,12 @@
 	</article>
 </div>
 <div class="topcoat-button-bar full">
+   <div class="topcoat-button-bar__item">
+	 <button class="topcoat-button-bar__button full" data-ng-click="prevpost(factory.itm.link)">Previous</button>
+   </div>
+   <div class="topcoat-button-bar__item">
+	 <button class="topcoat-button-bar__button full" data-ng-click="nextpost(factory.itm.link)">Next</button>
+   </div>
    <div class="topcoat-button-bar__item">
 	 <button class="topcoat-button-bar__button full">Mark Unread</button>
    </div>

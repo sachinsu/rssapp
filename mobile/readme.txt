@@ -14,3 +14,8 @@
 	in footer, show "previous" and "next" link 
     actions:
 	-> 
+	
+** TODO: 
+- Prev/Back navigation on view Post screen
+- Mark as unread on view Post screen
+- Add/remove category & subscription 
